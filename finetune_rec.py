@@ -1,6 +1,7 @@
 import os
-os.environ['LD_LIBRARY_PATH'] = '/data/baokq/miniconda3/envs/alpaca_lora/lib/'
+os.environ["LD_LIBRARY_PATH"] += ":" + "env/lib/python3.10/site-packages/nvidia/colab_runtime/lib"
 import sys
+sys.path.append("env/lib/python3.10/site-packages")
 from typing import List
 
 import numpy as np 
@@ -203,7 +204,8 @@ def train(
         if os.path.exists(checkpoint_name):
             print(f"Restarting from {checkpoint_name}")
             adapters_weights = torch.load(checkpoint_name)
-            model = set_peft_model_state_dict(model, adapters_weights)
+            # model = set_peft_model_state_dict(model, adapters_weights)
+            set_peft_model_state_dict(model, adapters_weights)
         else:
             print(f"Checkpoint {checkpoint_name} not found")
 

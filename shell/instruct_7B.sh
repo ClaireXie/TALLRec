@@ -1,10 +1,10 @@
 echo $1, $2
 seed=$2
-output_dir=XXX
-base_model=XXX
-train_data=XXX
-val_data=XXX
-instruction_model=XXX
+output_dir=model_output_book
+base_model=../LLaMA/decapoda-research-llama-7B-hf
+train_data=data/book/train.json
+val_data=data/book/valid.json
+instruction_model=alpaca-lora-7b
 for lr in 1e-4
 do
     for dropout in 0.05
@@ -23,7 +23,7 @@ do
                     --num_epochs 200 \
                     --learning_rate $lr \
                     --cutoff_len 512 \
-                    --lora_r 8 \
+                    --lora_r 16 \
                     --lora_alpha 16\
                     --lora_dropout $dropout \
                     --lora_target_modules '[q_proj,v_proj]' \
@@ -35,4 +35,6 @@ do
         done
     done
 done
+
+#--resume_from_checkpoint $instruction_model \
 
